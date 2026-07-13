@@ -1,2 +1,6 @@
 # Console helper printed by bundle.ps1 (regenerated each run)
 launch.txt
+
+# Stage output drafts are scratch, regenerated on every run; keep the folders via .gitkeep
+stages/*/output/*
+!stages/*/output/.gitkeep

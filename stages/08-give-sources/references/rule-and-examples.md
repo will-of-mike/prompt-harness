@@ -10,8 +10,15 @@
 - A working link to it, so the reader can open it and check.
 - Before saving, open every link and confirm it loads the named page. A link that
   does not load is a broken source; replace it or remove the claim.
+- "Opened" is a factual claim that you fetched the page with a web tool during this
+  work. If you cannot open web pages, do not write it — say the claim is from general
+  knowledge and unverified, and name the page where the reader can check it. Never
+  invent a link, and never cite a page you did not open as if you had.
 
 ## Good looks like
+
+The example below is illustrative only. Never reuse its figure, source, or link for a
+different claim — find the real source for the actual claim, or mark it unverified.
 
 Context: stating a claim about distance.
 

@@ -1,0 +1,3 @@
+# Never apply line-ending conversion to the generated PDF bundle — it is binary
+# and CRLF substitution would corrupt it.
+*.pdf binary

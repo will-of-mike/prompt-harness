@@ -45,7 +45,8 @@ if (-not $Out) { $Out = Join-Path $Root "$name-bundle.txt" }
 # Folders/files to always skip.
 $skipDirs  = @('.git', '.claude', 'node_modules')
 if (-not $IncludeOutputs) { $skipDirs += 'output' }
-$skipFiles = @('.gitkeep', 'launch.txt', (Split-Path $PSCommandPath -Leaf))
+$skipFiles = @('.gitkeep', 'launch.txt', 'README.md', '.gitignore', '.gitattributes',
+    (Split-Path $PSCommandPath -Leaf))
 
 # Never bundle the bundler's own outputs (.txt/.pdf/.md), including stale ones
 # from earlier runs — otherwise a binary PDF gets swept in as a source file.
@@ -73,8 +74,8 @@ $header = @"
 HOW THE USER RUNS THIS
 The user's message will start with the ">" character. Treat everything after ">"
 as their request. Follow the files below (CLAUDE.md is the top-level ruleset), run
-this workspace's "harden" process on that request, and reply with only the final
-answer in the format the workspace defines. ">" is simply shorthand for "harden".
+this workspace on that request, and reply with only the final answer in the format
+the workspace defines. ">" means: run this workspace now on the text that follows.
 There is no need to summarize or describe these files on your own.
 
 Delivery rules whenever you run it. These are part of what ">" means, so by

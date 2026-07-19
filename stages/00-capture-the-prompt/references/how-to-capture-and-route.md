@@ -8,7 +8,7 @@
 
 ## Route to another workspace (only if the prompt names one)
 
-- Some prompts ask to use another ICM workspace, for example
+- Some prompts ask to use another workspace, for example
   "use script-to-animation to make a video about ...".
 - When that happens:
   - Go to that workspace and do the task there.

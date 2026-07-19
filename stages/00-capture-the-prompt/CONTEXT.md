@@ -13,7 +13,7 @@ route there first.
 ## Process
 
 1. Read the prompt one word at a time. Skip nothing.
-2. If the prompt names another ICM workspace, follow the routing section of
+2. If the prompt names another workspace, follow the routing section of
    `references/how-to-capture-and-route.md`, do the task there, and bring the result
    back as the captured prompt.
 3. Do not answer the prompt yet. This stage only captures it.

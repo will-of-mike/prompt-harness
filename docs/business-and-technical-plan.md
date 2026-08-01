@@ -381,3 +381,124 @@ a UI. The job is to:
 The business ships as outcomes in a case container, operated by a scoped
 conversation, upsold with automation, sold B2B-first because the unit economics
 survive support there.
+
+---
+
+## 16. Vertical selection
+
+### 16.1 What makes a vertical low-risk
+
+A vertical is low-risk when it scores well on most of these:
+
+1. It is a right of the ordinary person — no professional license needed.
+2. Prepare-only has a clean line — the user submits; you never act as their agent in
+   a regulated capacity.
+3. No protected data class — no PHI, minimal PII beyond the user's own.
+4. No third-party harm — no defamation, no right-of-publicity exposure.
+5. Grounded in stable public sources — authoritative, citable, slow-changing.
+6. Errors are recoverable — a rejected request can be refiled; no forfeited rights.
+7. Not licensed-professional advice — not law, medicine, tax, financial, or
+   immigration advice.
+
+`foia-public-records` scores near-perfect on all seven, which is why it is the
+earliest "send on behalf" candidate.
+
+### 16.2 Low-risk consumer candidates
+
+Tier 1 (lowest risk, strong ICM fit):
+
+- Data privacy requests (DSAR / CCPA / GDPR) — statutory right, only the user's own
+  data, recurring (brokers re-add you), deadline-driven.
+- Property tax assessment appeals — administrative right, high dollar value,
+  deadline-gated, strong bot fit.
+- Consumer complaints (CFPB / FTC / state AG / BBB) — unconditional right to complain.
+- Regulatory comment submission (regulations.gov) — citizen right, deadline-driven.
+- Unclaimed property / asset recovery — citizen right, public databases.
+
+Tier 2 (low risk, design around a caveat):
+
+- Airline / travel compensation (EU261, DOT) — validated market; keep prepare-only.
+- Business entity compliance calendar — filings + deadlines are safe; entity-structure
+  advice is legal advice, so stop at the filing.
+- Security-deposit / bill-error demand letters — templates, not advice.
+- Parking / administrative citation appeals — scope to administrative, not criminal.
+- Grant / permit / license application prep — prep-only; do not certify eligibility.
+
+Avoid (look low-risk but are not): will/estate/trust structuring, immigration filings,
+tax preparation and credit repair as a paid service, debt settlement / financial
+advice.
+
+### 16.3 The B2B grounding shift
+
+In the consumer model the case starts when a person begins a journey and grounding
+comes from public law. In B2B two things change:
+
+1. The case is triggered by an inbound artifact or a clock — an RFP lands, a security
+   questionnaire arrives, a rule changes, a renewal comes due.
+2. Grounding shifts to the customer's own approved source-of-truth (their policies,
+   past answers, control library) plus external law.
+
+That second point lowers liability (you ground in their approved content, not
+invented claims) and raises the moat (their knowledge base lives in your product —
+data gravity and switching cost). The `Sources[]` table becomes their institutional
+memory.
+
+So the B2B product is: inbound artifact → staged retrieval from an approved knowledge
+base + law → drafted response → human approve → export / track deadlines. Same engine,
+different trigger and grounding set.
+
+### 16.4 B2B vertical shortlist
+
+Rubric: recurring/document-producing; a wrong answer has consequences (grounding is
+the value prop); deadline-driven (bot upsell); rule/jurisdiction-varying (registry
+moat); self-contained enough to wrap a UI and sell on day one; a clear buyer with
+budget.
+
+| # | Vertical | Buyer | Recurring pain | Why the stack wins |
+|---|----------|-------|----------------|--------------------|
+| 1 | RFP / security-questionnaire response | Sales / GRC / security at B2B SaaS | Inbound RFPs and questionnaires answered by hand under deadline | Textbook ICM; anti-hallucination is the point; grounds in their approved answers |
+| 2 | Regulatory change management | Compliance in banking, fintech, insurance, healthcare, cannabis | Tracking rule changes across jurisdictions, producing impact memos | Source registry + grounding is the moat; wrong = fines |
+| 3 | Multi-state licensing / permit renewals | Ops at multi-location / multi-state businesses | Many licenses, each with its own form, fee, deadline | Reuses jurisdiction-lookup muscle; deadline bot native |
+| 4 | Payer appeals / prior-auth (revenue cycle) | Medical billing / RCM companies | High-volume insurance appeals at scale | Direct B2B reuse of `insurance-claim`; higher value, higher compliance (PHI) |
+| 5 | Government contract compliance (FAR/DFARS) | Small/mid govcon firms | Clause tracking, compliance reps, reporting | Dense, source-grounded, deadline-driven, underserved SMB |
+| 6 | Multi-state employment compliance | HR / People ops at distributed companies | Handbook updates, postings, pay-transparency job posts by state | Jurisdiction registry + prepare-only; law-change-driven |
+| 7 | Grant management (writing + reporting) | Nonprofits, universities, grant consultants | Recurring proposals + strict post-award reporting | Procedural, deadline-heavy, source-grounded |
+
+### 16.5 Selection filters and the recommended wedge
+
+Filters applied: high-traffic "how to" demand; proven results with a number you can
+put in the pitch; easily pitchable once built (before/after demo sells itself).
+
+| Vertical | "How to" demand | Proven results | Pitchability | Engine fit | Risk | Solo-buildable |
+|----------|-----------------|----------------|--------------|-----------|------|----------------|
+| RFP / security-questionnaire | High | Strong (a whole software category proves it) | Excellent | Perfect | Low | Yes |
+| Grant writing & management | Very high | Strong and dollar-denominated ($ awarded, win rate) | Excellent | Strong | Low | Yes, easiest |
+| SOC 2 / compliance readiness | Very high | Proven, but billion-dollar incumbents | Good | Good | Medium | Crowded |
+| Provider-side prior-auth appeals | High | Excellent ($ recovered) | Excellent | Perfect | Higher (PHI) | Yes, w/ compliance burden |
+
+**Recommended wedge: grant writing and management.** It best satisfies the three
+filters — highest "how to" traffic, results denominated in dollars (the most
+persuasive pitch variable), and a demo that pitches itself. RFP / security
+questionnaire is the stronger pure-B2B-budget play and enters a validated market with
+weak incumbents; it is the recommended alternative.
+
+Why grants fit: buyers are plentiful and reachable (nonprofits, researchers, small
+businesses, and the grant consultants who do this for a living — sell to them as a
+force multiplier). It maps cleanly onto existing workspace muscle: eligibility screen
+→ funder research → narrative (grounded in the funder's criteria) → budget →
+compliance checklist → submission → post-award reporting. Deadline-driven, so the bot
+layer is native. Lowest risk: prepare-only, certifies nothing.
+
+### 16.6 The grant workspace pitch
+
+- One-liner: "Turn any funding opportunity into a fundable, compliance-checked
+  application draft — grounded in the funder's own criteria, with an audit trail."
+- The number: applications submitted, deadlines never missed, and (as customers
+  accumulate) dollars awarded.
+- The 2-minute demo: paste a real grant notice → extract eligibility + required
+  sections + deadline → draft each section cited to the funder's criteria → flag gaps
+  ("no evaluation plan yet") → export a submission-ready packet.
+
+The `prompt-harness` grounding is the differentiator: grant reviewers punish vague,
+unsupported claims, so "every sentence tied to the funder's criteria and the
+applicant's real program facts" is a genuine edge.

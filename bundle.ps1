@@ -14,10 +14,15 @@
   Folder to bundle. Defaults to the script's own folder.
 
 .PARAMETER Out
-  Output file. Defaults to <foldername>-bundle.md in the root.
+  Output file. Defaults to <foldername>-bundle.txt in the root (or
+  <foldername>-bundle-lean.txt with -Lean).
 
 .PARAMETER IncludeOutputs
   Also include the stages' output/ folders (off by default).
+
+.PARAMETER Lean
+  Use a minimal header with no delivery-rules block. For testing whether a
+  lighter preamble stops a tool from treating the upload as a document to cite.
 
 .PARAMETER Pdf
   Also produce a dense two-column PDF next to the text bundle. Packs the whole
@@ -47,8 +52,17 @@ if (-not $Out) { $Out = Join-Path $Root "$name$suffix" }
 # Folders/files to always skip.
 $skipDirs  = @('.git', '.claude', 'node_modules')
 if (-not $IncludeOutputs) { $skipDirs += 'output' }
-$skipFiles = @('.gitkeep', 'launch.txt', 'README.md', '.gitignore', '.gitattributes',
+
+# Repo plumbing that is never workspace instruction, in any workspace.
+$skipFiles = @('.gitkeep', 'launch.txt', '.gitignore', '.gitattributes', 'LICENSE',
     (Split-Path $PSCommandPath -Leaf))
+
+# Files that are prompt-harness's own human-facing extras. Only skip these when
+# bundling prompt-harness itself -- another workspace's README.md may be its real
+# instruction file, and dropping it silently would ship a broken bundle.
+if ($Root -eq (Resolve-Path $PSScriptRoot).Path) {
+    $skipFiles += @('README.md', '_prplan.md')
+}
 
 # Never bundle the bundler's own outputs (.txt/.pdf/.md), including stale ones
 # from earlier runs -- otherwise a binary PDF gets swept in as a source file.
@@ -61,7 +75,16 @@ $files = Get-ChildItem -Path $Root -Recurse -File | Where-Object {
     ($_.Name -notlike $bundleGlob) -and
     ($parts | Where-Object { $skipDirs -contains $_ }).Count -eq 0 -and
     ($skipFiles -notcontains $_.Name)
-} | Sort-Object FullName
+}
+
+# Sort ordinally, not by culture. Culture-aware sorting largely ignores the hyphen,
+# which puts "stages/00b-draft-the-answer" BEFORE "stages/00-capture-the-prompt" --
+# so the flattened file would present "write the answer" ahead of "read the prompt".
+$byPath = @{}
+foreach ($f in $files) { $byPath[$f.FullName] = $f }
+$sortedPaths = [string[]]@($byPath.Keys)
+[Array]::Sort($sortedPaths, [StringComparer]::Ordinal)
+$files = @($sortedPaths | ForEach-Object { $byPath[$_] })
 
 $sb = [System.Text.StringBuilder]::new()
 
@@ -106,13 +129,32 @@ it is that file's location in the folder.
 }
 [void]$sb.AppendLine($header)
 
+$empties = @()
 foreach ($f in $files) {
     $rel = $f.FullName.Substring($Root.Length).TrimStart('\','/') -replace '\\','/'
+
+    # Get-Content -Raw returns $null for a zero-byte file; .TrimEnd() on $null
+    # throws and the file lands in the bundle as an empty block.
+    $body = Get-Content -Raw -Encoding UTF8 -LiteralPath $f.FullName
+    if ($null -eq $body) { $body = '' }
+    $body = $body.TrimEnd()
+    if ($body -eq '') { $empties += $rel }
+
+    # Many workspace files contain ``` fences of their own. A fixed 3-backtick
+    # wrapper would be closed by the first inner fence, so the rest of the file
+    # reads as if it were outside the file block. Use a fence longer than the
+    # longest backtick run in the body.
+    $longest = 0
+    foreach ($m in [regex]::Matches($body, '`+')) {
+        if ($m.Value.Length -gt $longest) { $longest = $m.Value.Length }
+    }
+    $fence = '`' * ([Math]::Max(3, $longest + 1))
+
     [void]$sb.AppendLine("## file: $rel")
     [void]$sb.AppendLine()
-    [void]$sb.AppendLine('```')
-    [void]$sb.AppendLine((Get-Content -Raw -LiteralPath $f.FullName).TrimEnd())
-    [void]$sb.AppendLine('```')
+    [void]$sb.AppendLine($fence)
+    [void]$sb.AppendLine($body)
+    [void]$sb.AppendLine($fence)
     [void]$sb.AppendLine()
 }
 
@@ -121,6 +163,17 @@ foreach ($f in $files) {
 $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
 [System.IO.File]::WriteAllText($Out, $sb.ToString(), $utf8NoBom)
 Write-Host "Bundled $($files.Count) files -> $Out"
+if ($empties.Count -gt 0) {
+    Write-Warning "These files are empty and shipped as empty blocks: $($empties -join ', ')"
+}
+
+# A bundle that still carries an unfilled {{PLACEHOLDER}} tells the model to
+# format its answer with a literal placeholder. Catch it here, not in the chat.
+$unfilled = [regex]::Matches($sb.ToString(), '\{\{[A-Z0-9_]+\}\}') |
+    ForEach-Object { $_.Value } | Sort-Object -Unique
+if ($unfilled) {
+    Write-Warning "Unfilled placeholder(s) in the bundle: $($unfilled -join ', '). Run setup before shipping it."
+}
 
 # The short, memorable message to paste into the chat alongside the upload. All
 # the detailed rules live in the header, so this line stays tiny.
@@ -160,14 +213,30 @@ with open(src, encoding="utf-8") as f:
     lines = f.read().splitlines()
 
 W, H = letter
-margin, gutter, cols = 28, 16, 2
-font, size, lead = "Courier", 6, 6.8
+# Tuned to keep the page count clear of duck.ai's 15-page cap with headroom to
+# spare. Font size is unchanged at 6pt: the model reads extracted text, not pixels,
+# but dropping below 6 starts to cost extraction accuracy.
+margin, gutter, cols = 20, 14, 2
+font, size, lead = "Courier", 6, 6.2
 col_w = (W - 2 * margin - (cols - 1) * gutter) / cols
 max_chars = int(col_w / (size * 0.6))
 top, bottom = H - margin, margin
 rows_per_col = int((top - bottom) / lead)
 
 def wrap(s):
+    # PDF text extraction is WinAnsi-based; map any non-WinAnsi character to a
+    # deterministic ASCII fallback so the folder-map tree reads as text instead
+    # of substituted glyphs (reportlab would otherwise switch to ZapfDingbats
+    # and the extracted text would be garbage).
+    box = {"\u251c": "|", "\u2514": "`", "\u2500": "-"}
+    out = []
+    for ch in s:
+        try:
+            ch.encode("cp1252")
+            out.append(ch)
+        except UnicodeEncodeError:
+            out.append(box.get(ch, "?"))
+    s = "".join(out)
     return [s[i:i + max_chars] for i in range(0, len(s), max_chars)] if s else [""]
 
 flat = []

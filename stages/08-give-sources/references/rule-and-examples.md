@@ -8,7 +8,10 @@
 
 - The name of the study, record, or page the claim comes from.
 - A working link to it, so the reader can open it and check.
-- Before saving, open every link and confirm it loads the named page. A link that
+- A claim verified by reading a local file names the exact file path and the line or
+  section read. The path is the locator a reader can check; no web link exists for a
+  local file, so none is required.
+- Before saving, open every web link and confirm it loads the named page. A link that
   does not load is a broken source; replace it or remove the claim.
 - "Opened" is a factual claim that you fetched the page with a web tool during this
   work. If you cannot open web pages, do not write it -- say the claim is from general
@@ -36,5 +39,7 @@ The Moon is about 384,400 kilometers away. Source: a NASA page I saw once.
 
 - "a NASA page I saw once" has no exact name and no link, so the reader cannot
   check it.
-- A named source without a link, or with a link that does not load, fails the same
-  way: the reader still cannot check it. Open every link before saving.
+- A named web source without a link, or with a link that does not load, fails the
+  same way: the reader still cannot check it. Open every link before saving. A local
+  file source must name its exact path and line; a vague "I read it somewhere" fails
+  the same way.

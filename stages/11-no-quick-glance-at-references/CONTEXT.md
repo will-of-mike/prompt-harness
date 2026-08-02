@@ -1,31 +1,40 @@
 # 11-no-quick-glance-at-references
 
-Revise the running draft answer to obey one rule: confirm every reference was read fully, not glanced at.
+Check that every reference behind the answer was read in full, fix what the check finds, and carry the whole answer forward.
+
+This is a check stage, not a rewrite stage. `output/11-draft.md` holds the complete
+answer, not a report about the check.
 
 ## Inputs
 
 | Source | File/Location | Section/Scope | Why |
 |--------|--------------|---------------|-----|
-| Previous stage | `../10-skip-no-words/output/10-draft.md` | Full file | The running draft answer to revise |
+| Previous stage | `../10-skip-no-words/output/10-draft.md` | Full file | The running draft answer to check |
 | Reference | `references/rule-and-examples.md` | Full file | This stage's rule word-for-word, with a good-looks-like and bad-looks-like example |
 
 ## Process
 
 1. Read the running draft answer from the previous stage.
 2. Read the rule and its two examples in `references/rule-and-examples.md`.
-3. Revise the draft to confirm every reference was read fully, not glanced at. Change nothing that already obeys the rule.
-4. Do not weaken any earlier rule.
-5. Save to `output/11-draft.md`. IMMEDIATELY continue to `12-no-guessing`.
+3. Check that every reference the answer relies on was read in full rather than glanced at. Correct any claim that a full reading contradicts.
+4. Record what the check found in your working reply to the user, never in the draft.
+   The answer states what is true, not how carefully you checked. Evidence belongs in
+   the answer -- a line number, a source, a figure. Narration about your own diligence
+   does not.
+5. Do not weaken any earlier rule.
+6. Save to `output/11-draft.md`. IMMEDIATELY continue to `12-no-guessing`.
 
 ## Audit
 
 | Check | Pass Condition |
 |-------|---------------|
 | Rule met | The saved draft obeys this rule, matching the good-looks-like example and avoiding the bad-looks-like example |
+| Answer intact | `output/11-draft.md` is the complete answer to the prompt, changed only where this check found a defect |
+| No diligence narration | The saved draft contains no sentence about how carefully the work was done, such as "I read every line" or "this is not a hunch" |
 | Nothing lost | The draft still answers the prompt and still obeys every earlier rule |
 
 ## Outputs
 
 | Artifact | Location | Format |
 |----------|----------|--------|
-| Revised draft | `output/11-draft.md` | Plain-text answer obeying this rule and all earlier ones |
+| Checked draft | `output/11-draft.md` | The complete answer, this check applied, obeying every earlier rule |

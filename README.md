@@ -48,7 +48,8 @@ Only needed if you edit the workspace. From this folder, in PowerShell:
 ```
 
 This rewrites `prompt-harness-bundle.txt` and `prompt-harness-bundle.pdf` (a dense
-2-column, ~12-page layout that fits duck.ai's 15-page limit). Options:
+2-column, ~13-page layout that fits duck.ai's 15-page limit). It warns if a file is
+empty or an unfilled `{{PLACEHOLDER}}` would ship. Options:
 
 - `./bundle.ps1` -- text bundle only, no PDF.
 - `./bundle.ps1 -Root ../other-workspace -Pdf` -- bundle a different workspace.

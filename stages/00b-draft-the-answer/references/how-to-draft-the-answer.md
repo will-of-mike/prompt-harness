@@ -8,4 +8,7 @@
   the wording, and set the format.
 - If you are missing a fact, write what you know and mark the gap plainly. Do not
   invent facts.
+- Write the answer and nothing else. No stage heading, no "first draft" label, no
+  note about the pipeline. Every later stage revises this file, so anything you put
+  in it that is not the answer travels all the way to the reader.
 - Save the draft to `output/00b-draft.md`.

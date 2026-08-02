@@ -4,6 +4,12 @@
 
 > You will not use any abbreviations
 
+## The one exception: a proper name that is spelled that way
+
+If a shortened form is the actual registered name of an organization, product, or
+standard, keep it and say what it is on first use. Changing the name would break a
+source citation. See the same exception written out in stage 03.
+
 ## Good looks like
 
 Context: giving someone a task.

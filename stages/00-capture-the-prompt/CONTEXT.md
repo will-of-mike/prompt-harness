@@ -24,4 +24,4 @@ route there first.
 
 | Artifact | Location | Format |
 |----------|----------|--------|
-| Captured prompt | `output/00-prompt.md` | The prompt text, plus a note if it routed to another workspace |
+| Captured prompt | `output/00-prompt.md` | The prompt text under a "Prompt" heading; a "Route note" and "Result" heading as well if it routed to another workspace |

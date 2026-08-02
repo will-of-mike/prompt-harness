@@ -4,3 +4,6 @@ launch.txt
 # Stage output drafts are scratch, regenerated on every run; keep the folders via .gitkeep
 stages/*/output/*
 !stages/*/output/.gitkeep
+
+# Private planning notes. This repository is public; keep them out of it.
+_prplan.md

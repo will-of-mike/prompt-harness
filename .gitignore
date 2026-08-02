@@ -6,4 +6,4 @@ stages/*/output/*
 !stages/*/output/.gitkeep
 
 # Private planning notes. This repository is public; keep them out of it.
-_prplan.md
+_prplan*.md
